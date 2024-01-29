@@ -1,4 +1,4 @@
-const board = document.querySelector('.gameBoard');
+const cellContainer = document.querySelector('.cellContainer');
 
 const gameBoard = (() => {
   const rows = 3;
@@ -15,3 +15,16 @@ const gameBoard = (() => {
   return { getBoard };
 })();
 console.log(gameBoard.getBoard());
+
+const createCells = () => {
+  for (let i = 0; i < 9; i++) {
+    const cell = document.createElement('div');
+    cell.setAttribute('cellIndex', i);
+    cell.classList.add('cell');
+    cellContainer.appendChild(cell);
+  }
+};
+createCells();
+// const controller = () = {
+
+// }

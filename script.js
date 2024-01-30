@@ -1,4 +1,15 @@
 const cellContainer = document.querySelector('.cellContainer');
+const toWin = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+];
+let options = ['', '', '', '', '', '', '', '', ''];
 
 const gameBoard = (() => {
   const rows = 3;
@@ -16,16 +27,6 @@ const gameBoard = (() => {
 })();
 console.log(gameBoard.getBoard());
 
-const createCells = () => {
-  for (let i = 0; i < 9; i++) {
-    const cell = document.createElement('div');
-    cell.setAttribute('cellIndex', i);
-    cell.classList.add('cell');
-    cellContainer.appendChild(cell);
-  }
-};
-createCells();
-
 function GameController(
   playerOneName = 'Player One',
   playerTwoName = 'Player Two'
@@ -40,6 +41,7 @@ function GameController(
       mark: 'O',
     },
   ];
+
   let running = false;
   let activePlayer = players[0];
 
@@ -60,12 +62,39 @@ function GameController(
       playerTwo.setAttribute('active', 'activePlayer');
     }
   };
+  const isRunning = () => running;
+
   const playersTurn = () => activePlayer;
 
   const plaRound = () => {
+    const cells = document.querySelectorAll('.cell'); // Select all cells
     cells.forEach(cell => cell.addEventListener('click', clickedCell));
     resetBtn.addEventListener('click', restartGame);
-    gameText.textContent = `${currentPlayer}'s turn`;
+    gameText.textContent = `${activePlayer.name}'s turn`;
     running = true;
   };
+
+  return {
+    isRunning,
+    playersTurn,
+    plaRound,
+  };
 }
+const gameController = new GameController();
+const createCells = () => {
+  for (let i = 0; i < 9; i++) {
+    const cell = document.createElement('div');
+    cell.setAttribute('cellIndex', i);
+    cell.classList.add('cell');
+    cellContainer.appendChild(cell);
+
+    cell.addEventListener('click', () => {
+      if (!gameController.isRunning()) {
+        return;
+      }
+
+      console.log('clicked');
+    });
+  }
+};
+createCells();
